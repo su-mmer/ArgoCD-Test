@@ -30,7 +30,7 @@ podTemplate(label: 'docker-build',
         stage('Build'){
             container('docker'){
                 script {
-                    appImage = docker.build("summer99-summer/nginx-argo")
+                    appImage = docker.build("summer99summer/nginx-argo")
                 }
             }
         }
