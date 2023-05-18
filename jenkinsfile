@@ -25,7 +25,7 @@ podTemplate(label: 'docker-build',
         stage('Checkout'){
             container('git'){
                 checkout scm
-                SCM_VARS = git branch: 'development', url: 'https://github.com/oofbird/repo.git'
+                SCM_VARS = git branch: 'main', url: 'https://github.com/su-mmer.ArgoCD-Test.git'
             }
         }
         
