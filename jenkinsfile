@@ -20,10 +20,13 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
+        def sha
         
         stage('Checkout'){
             container('git'){
                 checkout scm
+                sha = ${env.GIT_COMMIT}
+                sh "-------------SHA 'sha'"
             }
         }
         
@@ -41,7 +44,6 @@ podTemplate(label: 'docker-build',
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', dockerHubCred){
                         appImage.push("${env.GIT_COMMIT}")
-                        sh "SHA ${env.GIT_COMMIT}"
                         appImage.push("latest")
                     }
                 }
