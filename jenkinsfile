@@ -20,7 +20,6 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
-        def HASH
         
         stage('Checkout'){
             container('git'){
@@ -35,17 +34,6 @@ podTemplate(label: 'docker-build',
                 }
             }
         }
-
-        stage('Test'){
-            container('git'){
-                script {
-                    appImage.inside {
-                        sh 'echo $(git rev-parse HEAD)'
-                    }
-                }
-            }
-        }
-
 
         stage('Push'){
             container('docker'){
