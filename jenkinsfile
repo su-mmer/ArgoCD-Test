@@ -25,11 +25,6 @@ podTemplate(label: 'docker-build',
         stage('Checkout'){
             container('git'){
                 checkout scm
-                script {
-                   appImage.inside {
-                     sh 'echo $(git rev-parse HEAD)'
-                   }
-                }
             }
         }
         
@@ -40,7 +35,16 @@ podTemplate(label: 'docker-build',
                 }
             }
         }
-        
+
+        stage('Test'){
+            container('git'){
+                script {
+                    appImage.inside {
+                        sh 'echo $(git rev-parse HEAD)'
+                    }
+                }
+            }
+        }
 
 
         stage('Push'){
