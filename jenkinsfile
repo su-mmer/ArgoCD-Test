@@ -20,16 +20,12 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
-        environment {
-           RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
-        }
+        def SCM_VARS
 
         stage('Checkout'){
             container('git'){
                 checkout scm
-                script {
-                  sh "$RELEASE_NOTES"
-                }
+                SCM_VARS = git branch: 'development', url: 'https://github.com/oofbird/repo.git'
             }
         }
         
@@ -46,7 +42,7 @@ podTemplate(label: 'docker-build',
             container('docker'){
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', dockerHubCred){
-                        appImage.push("${env.GIT_COMMIT}")
+                        appImage.push(${SCM_VARS.GIT_COMMIT})
                         appImage.push("latest")
                     }
                 }
