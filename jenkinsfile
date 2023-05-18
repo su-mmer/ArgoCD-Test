@@ -20,6 +20,7 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
+        def SHA=${env.GIT_COMMIT}
         
         stage('Checkout'){
             container('git'){
@@ -31,6 +32,7 @@ podTemplate(label: 'docker-build',
             container('docker'){
                 script {
                     appImage = docker.build("summer99summer/nginx-argo")
+                    sh "SHA ${env.GIT_COMMIT}"
                 }
             }
         }
@@ -39,7 +41,7 @@ podTemplate(label: 'docker-build',
             container('docker'){
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', dockerHubCred){
-                        appImage.push("${env.GIT_COMMIT}")
+                        appImage.push(SHA)
                         appImage.push("latest")
                     }
                 }
