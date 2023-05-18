@@ -20,15 +20,15 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
-        def getCommitSha() {
-           return sh(returnStdout: true, script: 'git rev-parse HEAD')
-        }
-        def sha = getCommitSha()
-        echo sha
 
         stage('Checkout'){
             container('git'){
                 checkout scm
+                def getCommitSha() {
+                   return sh(returnStdout: true, script: 'git rev-parse HEAD')
+                }
+                env.GIT_COMMIT_HASH = getCommitSha()
+                echo ${env.GIT_COMMIT_HASH}
             }
         }
         
