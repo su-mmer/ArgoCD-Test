@@ -20,6 +20,7 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
+				def commitsha = ${{ github.sha }}
         
         stage('Checkout'){
             container('git'){
@@ -39,7 +40,7 @@ podTemplate(label: 'docker-build',
             container('docker'){
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', dockerHubCred){
-                        appImage.push(${{ github.sha }})
+                        appImage.push("${env.BUILD_NUMBER}")
                         appImage.push("latest")
                     }
                 }
