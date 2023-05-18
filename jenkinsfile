@@ -24,11 +24,9 @@ podTemplate(label: 'docker-build',
         stage('Checkout'){
             container('git'){
                 checkout scm
-                def getCommitSha() {
-                   return sh(returnStdout: true, script: 'git rev-parse HEAD')
+                script {
+                  GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
                 }
-                env.GIT_COMMIT_HASH = getCommitSha()
-                echo ${env.GIT_COMMIT_HASH}
             }
         }
         
