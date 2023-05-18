@@ -20,12 +20,15 @@ podTemplate(label: 'docker-build',
     node('docker-build') {
         def dockerHubCred = 'dockerhubtoken'
         def appImage
+        environment {
+           RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
+        }
 
         stage('Checkout'){
             container('git'){
                 checkout scm
                 script {
-                  GIT_COMMIT_HASH = sh (script: "git log -n 1 --pretty=format:'%H'", returnStdout: true)
+                  sh "$RELEASE_NOTES"
                 }
             }
         }
