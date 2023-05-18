@@ -39,7 +39,7 @@ podTemplate(label: 'docker-build',
             container('docker'){
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', dockerHubCred){
-                        appImage.push("${{ github.sha }}")
+                        appImage.push(${{ github.sha }})
                         appImage.push("latest")
                     }
                 }
