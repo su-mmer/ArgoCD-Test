@@ -6,7 +6,7 @@ node {
     app = docker.build("summer99summer/nginx-argo")
   }
   stage('========== Push image ==========') {
-    docker.withRegistry('https://registry.hub.docker.com', 'dockerhubtoken') { # Jenkins Credential 정보
+    docker.withRegistry('https://registry.hub.docker.com', 'dockerhubtoken') {
       app.push("${env.BUILD_NUMBER}") 
       app.push("latest") 
     }
