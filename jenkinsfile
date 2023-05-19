@@ -8,8 +8,8 @@ podTemplate(label: 'docker-build',
     ),
     containerTemplate(
       name: 'docker',
-      image: 'docker',
-      command: 'ls -l /var/run/docker.sock',
+      image: 'docker:latest',
+      command: 'cat',
       ttyEnabled: true
     ),
   ],
