@@ -1,14 +1,8 @@
 node {
-  stage('========== Clone repository ==========') {
-    checkout scm
-  }
-  stage('========== Build image ==========') {
-    app = docker.build("summer99summer/nginx-argo")
-  }
-  stage('========== Push image ==========') {
-    docker.withRegistry('https://registry.hub.docker.com', 'dockerhubtoken') {
-      app.push("${env.BUILD_NUMBER}") 
-      app.push("latest") 
-    }
-  }
+  checkout scm
+  def dockerHubCred = 'dockerhubtoken'
+  def customImage = docker.build("summer99summer/nginx-argo")
+  docker.withRegistry('https://summer99summer/nginx-argo', dockerHubCred)
+  customImage.push('latest')
+  customImage.push('${env.BUILD_ID}')
 }
